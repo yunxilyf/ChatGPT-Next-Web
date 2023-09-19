@@ -521,7 +521,7 @@ export const useChatStore = createPersistStore(
             config: {
               model: getSummarizeModel(session.mask.modelConfig.model),
             },
-            whitelist: false,
+            whitelist: true,
             onFinish(message) {
               get().updateCurrentSession(
                 (session) =>
