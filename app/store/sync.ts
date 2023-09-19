@@ -27,6 +27,7 @@ export interface GistConfig {
   token: string;
 }
 
+
 export type SyncStore = GetStoreState<typeof useSyncStore> & {
   syncing: boolean;
 };
@@ -42,17 +43,18 @@ const DEFAULT_SYNC_STATE = {
     gistId: "",
     token: "",
   },
-
+    
   webdav: {
     endpoint: "",
     username: "",
     password: "",
     filename: "",
+
   },
 
   upstash: {
     endpoint: "",
-    username: "",
+    username: STORAGE_KEY
     apiKey: "",
     filename: "",
   },
