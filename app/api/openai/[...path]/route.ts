@@ -5,8 +5,9 @@ import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../auth";
 import { requestOpenai } from "../../common";
+import { DEFAULT_CORS_HOST } from "@/app/constant";
 
-const ALLOWD_PATH = new Set(Object.values(OpenaiPath));
+const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
 function getModels(remoteModelRes: OpenAIListModelResponse) {
   const config = getServerSideConfig();
@@ -27,12 +28,24 @@ async function handle(
   console.log("[OpenAI Route] params ", params);
 
   if (req.method === "OPTIONS") {
-    return NextResponse.json({ body: "OK" }, { status: 200 });
+    // Set CORS headers for preflight requests
+    return NextResponse.json(
+      { body: "OK" },
+      {
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": `${DEFAULT_CORS_HOST}`, // Replace * with the appropriate origin(s)
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Add other allowed methods if needed
+          "Access-Control-Allow-Headers": "*", // Replace * with the appropriate headers
+          "Access-Control-Max-Age": "86400", // Adjust the max age value if needed
+        },
+      },
+    );
   }
 
   const subpath = params.path.join("/");
 
-  if (!ALLOWD_PATH.has(subpath)) {
+  if (!ALLOWED_PATH.has(subpath)) {
     console.log("[OpenAI Route] forbidden path ", subpath);
     return NextResponse.json(
       {
