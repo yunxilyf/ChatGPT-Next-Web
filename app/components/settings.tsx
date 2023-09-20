@@ -379,6 +379,20 @@ function SyncConfigModal(props: { onClose?: () => void }) {
               }}
             ></input>
           </ListItem>
+          <ListItem
+            title={Locale.Settings.Sync.Config.LockClient.Title}
+            subTitle={Locale.Settings.Sync.Config.LockClient.SubTitle}
+          >
+            <input
+              type="checkbox"
+              checked={syncStore.lockclient}
+              onChange={(e) => {
+                syncStore.update(
+                  (config) => (config.lockclient = e.currentTarget.checked),
+                );
+              }}
+            ></input>
+          </ListItem>
         </List>
 
         {syncStore.provider === ProviderType.WebDAV && (

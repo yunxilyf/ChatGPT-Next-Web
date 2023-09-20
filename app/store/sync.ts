@@ -61,7 +61,9 @@ const DEFAULT_SYNC_STATE = {
   lastProvider: "",
   lastUpdateTime: 0,
   syncing: false,
+  lockclient: false,
 };
+
 export const useSyncStore = createPersistStore(
   DEFAULT_SYNC_STATE,
   (set, get) => ({
@@ -124,34 +126,38 @@ export const useSyncStore = createPersistStore(
         const rawContent = await client.get(config.filename);
         const remoteState = JSON.parse(rawContent) as AppState;
 
-        const sessions = localState[StoreKey.Chat].sessions;
-        const currentSession =
-          sessions[localState[StoreKey.Chat].currentSessionIndex];
-        const filteredTopic =
-          currentSession.topic === "New Conversation" &&
-          currentSession.messages.length === 0;
+        if (get().lockclient) {
+          setLocalAppState(remoteState);
+        } else {
+          mergeAppState(localState, remoteState);
 
-        mergeAppState(localState, remoteState);
+          const sessions = localState[StoreKey.Chat].sessions;
+          const currentSession =
+            sessions[localState[StoreKey.Chat].currentSessionIndex];
+          const filteredTopic =
+            currentSession.topic === "New Conversation" &&
+            currentSession.messages.length === 0;
 
-        if (filteredTopic) {
-          const remoteSessions = remoteState[StoreKey.Chat].sessions;
-          const remoteCurrentSession =
-            remoteSessions[remoteState[StoreKey.Chat].currentSessionIndex];
-          const remoteFilteredTopic =
-            remoteCurrentSession.topic === "New Conversation" &&
-            remoteCurrentSession.messages.length > 0;
+          if (filteredTopic) {
+            const remoteSessions = remoteState[StoreKey.Chat].sessions;
+            const remoteCurrentSession =
+              remoteSessions[remoteState[StoreKey.Chat].currentSessionIndex];
+            const remoteFilteredTopic =
+              remoteCurrentSession.topic === "New Conversation" &&
+              remoteCurrentSession.messages.length > 0;
 
-          if (!remoteFilteredTopic) {
-            localState[StoreKey.Chat].sessions[
-              localState[StoreKey.Chat].currentSessionIndex
-            ].mask = {
-              ...currentSession.mask,
-              name: remoteCurrentSession.mask.name,
-            };
+            if (!remoteFilteredTopic) {
+              localState[StoreKey.Chat].sessions[
+                localState[StoreKey.Chat].currentSessionIndex
+              ].mask = {
+                ...currentSession.mask,
+                name: remoteCurrentSession.mask.name,
+              };
+            }
           }
-        }
 
-        setLocalAppState(localState);
+          setLocalAppState(localState);
+        }
       } catch (e) {
         console.log(
           `[Sync] Failed to get remote state from file '${config.filename}' for provider ['${provider}']:`,
@@ -186,6 +192,10 @@ export const useSyncStore = createPersistStore(
 
     async syncGitHubGist(client: any, value: Object, localState: AppState) {
       await client.set(localState, value);
+    },
+
+    setLockClient(value: boolean) {
+      set({ lockclient: value });
     },
 
     async check() {

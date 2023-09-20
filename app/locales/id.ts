@@ -208,6 +208,11 @@ const id: PartialLocaleType = {
           SubTitle:
             "Hanya berlaku untuk pengaturan kontrol akses timpa seperti kode akses",
         },
+        LockClient: {
+          Title: "Aktifkan Jangan Sinkronkan Data Saat Ini",
+          SubTitle:
+            "Hanya menyinkronkan data dari sumber lain, bukan data saat ini",
+        },
 
         WebDav: {
           Endpoint: {

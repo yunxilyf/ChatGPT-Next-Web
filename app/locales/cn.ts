@@ -224,6 +224,10 @@ const cn = {
           Title: "启用覆盖访问控制",
           SubTitle: "仅适用于覆盖访问控制设置，例如访问代码",
         },
+        LockClient: {
+          Title: "启用不同步当前数据",
+          SubTitle: "仅同步其他来源的数据，而不同步当前数据",
+        },
 
         WebDav: {
           Endpoint: {
