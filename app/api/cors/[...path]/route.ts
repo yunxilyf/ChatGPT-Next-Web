@@ -28,7 +28,7 @@ async function handle(
 
   const fetchResult = await fetch(targetUrl, fetchOptions);
 
-  console.log("[Any Proxy]", targetUrl, {
+  console.log("[Cloud Sync]", targetUrl, {
     status: fetchResult.status,
     statusText: fetchResult.statusText,
   });
