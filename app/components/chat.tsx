@@ -1157,13 +1157,7 @@ function _Chat() {
                       ) : isContext ? (
                         <Avatar avatar="1f4ab" /> // Add this line for system messages
                       ) : (
-                        <>
-                          {["system"].includes(message.role) ? (
-                            <Avatar avatar="2699-fe0f" />
-                          ) : (
-                            <MaskAvatar mask={session.mask} />
-                          )}
-                        </>
+                        <MaskAvatar mask={session.mask} />
                       )}
                     </div>
 
