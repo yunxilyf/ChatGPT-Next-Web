@@ -61,8 +61,8 @@ export function PrivacyPage(props: { onClose?: () => void }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const goHome = () => {
-    navigate(Path.Home);
+  const goChat = () => {
+    navigate(Path.Chat);
   };
 
   const copy = () => {
@@ -121,7 +121,7 @@ export function PrivacyPage(props: { onClose?: () => void }) {
             <IconButton
               text={Locale.PrivacyPage.Confirm}
               icon={<ConfirmIcon />}
-              onClick={goHome}
+              onClick={goChat}
               bordered
             />
           </div>
