@@ -35,7 +35,7 @@ export const getBuildConfig = () => {
         .toString()
         .trim();
       const coAuthorMatch: RegExpMatchArray | null = coAuthorLine.match(
-        /Co-authored-by:\s*(.*)/,
+        /Co-Authored-By:\s*(.*)|Co-authored-by:\s*(.*)/,
       );
       const coAuthors: string[] = coAuthorMatch
         ? coAuthorMatch[1]
@@ -70,10 +70,14 @@ export const getBuildConfig = () => {
       const coAuthoredBy: string[] = commitMessage
         .split("\n")
         .map((line) => line.trim())
-        .filter((line) => line.startsWith("Co-authored-by:"))
+        .filter(
+          (line) =>
+            line.startsWith("Co-Authored-By:") ||
+            line.startsWith("Co-authored-by:"),
+        )
         .map(
           (line) =>
-            line.substring("Co-authored-by:".length).trim().split(" <")[0],
+            line.substring("Co-Authored-By:".length).trim().split(" <")[0],
         );
 
       const commitMessageObj = {
