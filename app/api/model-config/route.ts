@@ -5,7 +5,7 @@ async function handle() {
   const model_list = DEFAULT_MODELS.map((model) => {
     return {
       name: model.name,
-      available: true,
+      available: model.available,
     };
   });
   return NextResponse.json({ model_list });
