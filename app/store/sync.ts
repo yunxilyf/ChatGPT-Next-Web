@@ -172,7 +172,7 @@ export const useSyncStore = createPersistStore(
         }
       }
 
-      if (overwriteAccessControl) {
+      if (overwriteAccessControl !== false) { // default is false ref #DEFAULT_SYNC_STATE
         const accessControl = localState['access-control'];
         accessControl.token
         accessControl.accessCode
