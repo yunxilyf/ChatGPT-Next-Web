@@ -1,12 +1,6 @@
 import tauriConfig from "../../src-tauri/tauri.conf.json";
 
 export const getBuildConfig = () => {
-  if (typeof process === "undefined") {
-    throw Error(
-      "[Server Config] you are importing a nodejs-only module outside of nodejs",
-    );
-  }
-
   const buildMode = process.env.BUILD_MODE ?? "standalone";
   const isApp = !!process.env.BUILD_APP;
   const version = "v" + tauriConfig.package.version;
@@ -35,20 +29,16 @@ export const getBuildConfig = () => {
         .toString()
         .trim();
       const coAuthorMatch: RegExpMatchArray | null = coAuthorLine.match(
-        /Co-Authored-By:\s*(.*)|Co-authored-by:\s*(.*)/,
+        /Co-Authored-By:\s*(.*)|Co-authored-by:\s*(.*)/
       );
       const coAuthors: string[] = coAuthorMatch
-        ? coAuthorMatch[1]
-            .trim()
-            .split(">")
-            .map((author) => author.trim())
+        ? coAuthorLine
+          .split(":")
+          .slice(1)
+          .map((author) => author.trim())
         : [];
 
-      const coAuthored: boolean = coAuthors.length > 0; // if coAuthorMatch is not null, set to true
-
-      if (!commitMessage) {
-        console.warn("[Build Config] No commit message available.");
-      }
+      const coAuthored: boolean = coAuthors.length > 0;
 
       const [title, ...messages] = commitMessage.split("\n");
 
@@ -62,23 +52,13 @@ export const getBuildConfig = () => {
         .split("\n")
         .map((line) => line.trim())
         .filter((line) => line.startsWith("Signed-off-by:"))
-        .map(
-          (line) =>
-            line.substring("Signed-off-by:".length).trim().split(" <")[0],
-        );
+        .map((line) => line.substring("Signed-off-by:".length).trim().split(" <")[0]);
 
       const coAuthoredBy: string[] = commitMessage
         .split("\n")
         .map((line) => line.trim())
-        .filter(
-          (line) =>
-            line.startsWith("Co-Authored-By:") ||
-            line.startsWith("Co-authored-by:"),
-        )
-        .map(
-          (line) =>
-            line.substring("Co-Authored-By:".length).trim().split(" <")[0],
-        );
+        .filter((line) => line.startsWith("Co-Authored-By:") || line.startsWith("Co-authored-by:"))
+        .map((line) => line.substring("Co-Authored-By:".length).trim().split(" <")[0]);
 
       const commitMessageObj = {
         summary: title || "No title",
