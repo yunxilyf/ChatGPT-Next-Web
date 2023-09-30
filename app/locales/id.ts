@@ -1,14 +1,10 @@
-import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import { PartialLocaleType } from "./index";
 
-const isApp = !!getClientConfig()?.isApp;
 const id: PartialLocaleType = {
   WIP: "Coming Soon...",
   Error: {
-    Unauthorized: isApp
-    ? "Kunci API tidak valid, silakan periksa di halaman [Pengaturan](/#/settings)."
-    : "Akses tidak diizinkan, silakan masukkan kode akses di halaman [autentikasi](/#/auth), atau masukkan kunci API OpenAI Anda.",
+    Unauthorized: "Akses tidak diizinkan, silakan masukkan kode akses atau masukkan kunci API OpenAI Anda. di halaman [autentikasi](/#/auth) atau di halaman [Pengaturan](/#/settings).",
     Content_Policy: {
       Title:
         "Permintaan Anda ditandai karena Pelanggaran Kebijakan Konten.\nBaca di sini: https://platform.openai.com/docs/guides/moderation/overview",
