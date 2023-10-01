@@ -32,9 +32,6 @@ export function ChangeLog(props: { onClose?: () => void }) {
 
       if (commitInfo?.commitMessage.description) {
         let changes: string[] = commitInfo.commitMessage.description;
-        if (getClientConfig()?.isApp && changes.length > 10) {
-          changes = changes.slice(0, 10); // Limit to 10 messages for isApp
-        }
         const changesFormatted = changes
           .map((change: string) => `\n\n\n   ${change}\n\n`)
           .join("\n\n\n");

@@ -4,7 +4,7 @@ export function getClientConfig() {
   if (typeof document !== "undefined") {
     // client side
     const buildConfig = JSON.parse(queryMeta("config")) as BuildConfig;
-    const commitMessage = buildConfig.commitMessage?.description?.slice(0, 10);
+    const commitMessage = buildConfig.commitMessage.description;
     return {
       ...buildConfig,
       commitMessage: {
@@ -17,7 +17,7 @@ export function getClientConfig() {
   if (typeof process !== "undefined") {
     // server side
     const buildConfig = getBuildConfig();
-    const commitMessage = buildConfig.commitMessage?.description?.slice(0, 10);
+    const commitMessage = buildConfig.commitMessage.description;
     return {
       ...buildConfig,
       commitMessage: {
