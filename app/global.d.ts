@@ -12,7 +12,13 @@ declare module "*.svg";
 
 declare interface Window {
   __TAURI__?: {
-    [x: string]: any;
     writeText(text: string): Promise<void>;
+    invoke(command: string, payload?: Record<string, unknown>): Promise<any>;
+    dialog: {
+      save(options?: Record<string, unknown>): Promise<string | null>;
+    };
+    fs: {
+      writeBinaryFile(path: string, data: Uint8Array): Promise<void>;
+    };
   };
 }

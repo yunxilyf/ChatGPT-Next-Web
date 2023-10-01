@@ -1,3 +1,4 @@
+import { getClientConfig } from "./config/client";
 import { useEffect, useState } from "react";
 import { showToast } from "./components/ui-lib";
 import Locale from "./locales";
@@ -6,9 +7,12 @@ export function trimTopic(topic: string) {
   return topic.replace(/[，。！？”“"、,.!?]*$/, "");
 }
 
+const isApp = !!getClientConfig()?.isApp;
+
 export async function copyToClipboard(text: string) {
+
   try {
-    if (window.__TAURI__) {
+    if (isApp && window.__TAURI__) {
       window.__TAURI__.writeText(text);
     } else {
       await navigator.clipboard.writeText(text);
@@ -44,10 +48,7 @@ export async function downloadAs(text: object, filename: string) {
       });
 
       if (result !== null) {
-        await window.__TAURI__.fs.writeBinaryFile(
-          result,
-          Array.from(uint8Array),
-        );
+        await window.__TAURI__.fs.writeBinaryFile(result, Uint8Array.from(uint8Array));
         showToast(Locale.Download.Success);
       } else {
         showToast(Locale.Download.Failed);
