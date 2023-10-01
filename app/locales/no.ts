@@ -115,9 +115,10 @@ const no: PartialLocaleType = {
     Usage: {
       Title: "Saldo for konto",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "ukjent";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "ukjent";
-        return `Brukt denne månaden ${used}, Hard grense ${hardLimitusd}, Godkjent bruksbegrensning ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('nn-NO', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "ukjent";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('nn-NO', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "ukjent";
+        const usedFormatted = new Intl.NumberFormat('nn-NO', { style: 'currency', currency: 'USD' }).format(used);
+        return `Brukt denne månaden: ${usedFormatted}, Hard grense: ${hardLimitusd}, Godkjent bruksgrense: ${hardLimit}`;
       },
       IsChecking: "Sjekker ...",
       Check: "Sjekk",

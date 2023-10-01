@@ -133,9 +133,10 @@ const ru: PartialLocaleType = {
     Usage: {
       Title: "Баланс аккаунта",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "неизвестно";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "неизвестно";
-        return `Использовано в этом месяце ${used}, Жесткий лимит ${hardLimitusd}, Утвержденный лимит использования ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "неизвестно";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "неизвестно";
+        const usedFormatted = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'USD' }).format(used);
+        return `Использовано в этом месяце: ${usedFormatted}, Жесткий лимит: ${hardLimitusd}, Утвержденный лимит использования: ${hardLimit}`;
       },
       IsChecking: "Проверка...",
       Check: "Проверить",

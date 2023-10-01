@@ -327,9 +327,10 @@ const en: LocaleType = {
     Usage: {
       Title: "Account Balance",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "unknown";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "unknown";
-        return `Used this month $${used}, Hard limit $${hardLimitusd}, Approved usage limit $${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "unknown";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "unknown";
+        const usedFormatted = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(used);
+        return `Used this month ${usedFormatted}, Hard limit ${hardLimitusd}, Approved usage limit ${hardLimit}`;
       },
       IsChecking: "Checking...",
       Check: "Check",

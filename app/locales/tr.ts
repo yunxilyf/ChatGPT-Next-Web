@@ -132,9 +132,10 @@ const tr: PartialLocaleType = {
     Usage: {
       Title: "Hesap Bakiyesi",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "bilinmiyor";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "bilinmiyor";
-        return `Bu ay kullanılan ${used}, Sert limit ${hardLimitusd}, Onaylı kullanım limiti ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "bilinmiyor";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "bilinmiyor";
+        const usedFormatted = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'USD' }).format(used);
+        return `Bu ay kullanılan: ${usedFormatted}, Sert sınır: ${hardLimitusd}, Onaylanan kullanım limiti: ${hardLimit}`;
       },
       IsChecking: "Kontrol ediliyor...",
       Check: "Tekrar Kontrol Et",

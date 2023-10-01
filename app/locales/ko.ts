@@ -132,9 +132,10 @@ const ko: PartialLocaleType = {
     Usage: {
       Title: "계정 잔액",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "알 수 없음";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "알 수 없음";
-        return `이번 달 사용량 ${used}, 하드 제한 ${hardLimitusd}, 승인된 사용 제한 ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "알 수 없음";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "알 수 없음";
+        const usedFormatted = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'USD' }).format(used);
+        return `이번 달 사용 금액: ${usedFormatted}, 하드 리미트: ${hardLimitusd}, 승인된 사용 한도: ${hardLimit}`;
       },
       IsChecking: "확인 중...",
       Check: "확인",

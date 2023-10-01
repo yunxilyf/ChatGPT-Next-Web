@@ -132,9 +132,10 @@ const cs: PartialLocaleType = {
     Usage: {
       Title: "Stav účtu",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "neznámý";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "neznámý";
-        return `Použito tento měsíc ${used}, Tvrdý limit ${hardLimitusd}, Schválený limit využití ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "neznámý";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "neznámý";
+        const usedFormatted = new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'USD' }).format(used);
+        return `Použito tento měsíc: ${usedFormatted}, Tvrdý limit: ${hardLimitusd}, Schválený limit využití: ${hardLimit}`;
       },
       IsChecking: "Kontroluji...",
       Check: "Zkontrolovat",

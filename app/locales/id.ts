@@ -305,9 +305,10 @@ const id: PartialLocaleType = {
     Usage: {
       Title: "Saldo Akun",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "tidak diketahui";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "tidak diketahui";
-        return `Digunakan bulan ini ${used}, Batas maksimum ${hardLimitusd}, Batas penggunaan yang disetujui ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "tidak diketahui";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "tidak diketahui";
+        const usedFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'USD' }).format(used);
+        return `Digunakan bulan ini ${usedFormatted}, Batas maksimum ${hardLimitusd}, Batas penggunaan yang disetujui ${hardLimit}`;
       },
       IsChecking: "Memeriksa...",
       Check: "Periksa",

@@ -131,9 +131,10 @@ const vi: PartialLocaleType = {
     Usage: {
       Title: "Hạn mức tài khoản",
       SubTitle(used: any, total: any) {
-        const hardLimitusd = total.hard_limit_usd !== undefined ? total.hard_limit_usd : "không rõ";
-        const hardLimit = total.system_hard_limit_usd !== undefined ? total.system_hard_limit_usd : "không rõ";
-        return `Đã sử dụng trong tháng này ${used}, Giới hạn cứng ${hardLimitusd}, Giới hạn sử dụng được chấp thuận ${hardLimit}`;
+        const hardLimitusd = total.hard_limit_usd !== undefined ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'USD' }).format(total.hard_limit_usd) : "không xác định";
+        const hardLimit = total.system_hard_limit_usd !== undefined ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'USD' }).format(total.system_hard_limit_usd) : "không xác định";
+        const usedFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'USD' }).format(used);
+        return `Sử dụng trong tháng này: ${usedFormatted}, Giới hạn cứng: ${hardLimitusd}, Giới hạn sử dụng được phê duyệt: ${hardLimit}`;
       },
       IsChecking: "Đang kiểm tra...",
       Check: "Kiểm tra",
