@@ -20,22 +20,10 @@ declare interface Window {
     fs: {
       writeBinaryFile(path: string, data: Uint8Array): Promise<void>;
     };
-  };
-}
-// added by backtrackz
-// this auth for client-app in future
-declare interface Auth {
-  __TAURI__?: {
-    authenticate(): Promise<Auth>;
-    logout(): Promise<void>;
-    isAuthenticated(): Promise<boolean>;
-    getAccessToken(): Promise<string>;
-    getRefreshToken(): Promise<string>;
-    setAccessToken(token: string): Promise<void>;
-    setRefreshToken(token: string): Promise<void>;
-    setTokenExpiration(expiration: number): Promise<void>;
-    token: string;
-    refreshToken: string;
-    expiresAt: number;
+    notification:{
+      requestPermission(): Promise<Permission>;
+      isPermissionGranted(): Promise<boolean>;
+      sendNotification(options: string | Options): void;
+    };
   };
 }
