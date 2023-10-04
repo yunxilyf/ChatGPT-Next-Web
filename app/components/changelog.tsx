@@ -38,9 +38,15 @@ export function ChangeLog(props: { onClose?: () => void }) {
         const changesFormatted = changes
           .map((change: string) => `\n\n\n   ${change}\n\n`)
           .join("\n\n\n");
-        const authorSection = coAuthored.length > 0
-          ? `[${author}](https://github.com/${author}) (Co Authored by [${coAuthored.join(", ")}](https://github.com/${coAuthored.join(", ")}))`
-          : `[${author}](https://github.com/${author})`;
+
+        let coAuthorsSection = "";
+        if (coAuthored.length > 0) {
+          const coAuthorLinks = coAuthored.map((coAuthor: string) => `[${coAuthor}](https://github.com/${coAuthor})`);
+          coAuthorsSection = `(Co-Authored by ${coAuthorLinks.join(", ")})`;
+        }
+
+        const authorSection = `[${author}](https://github.com/${author}) ${coAuthorsSection}`;
+
         table += `\n\n\n  ![${author}](https://github.com/github.png?size=25)![${author}](https://github.com/${author}.png?size=25) ${authorSection} :\n\n${commitInfo?.commitMessage.summary}\n\n\n${changesFormatted}\n\n\n`;
       } else {
         table += `###${commitInfo?.commitMessage.summary}###\nNo changes\n\n`;
