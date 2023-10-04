@@ -700,8 +700,8 @@ function _Chat() {
       return;
     }
     setIsLoading(true);
-    chatStore.onUserInput(escapedInput).then(() => setIsLoading(false));
-    localStorage.setItem(LAST_INPUT_KEY, escapedInput);
+    chatStore.onUserInput(userInput).then(() => setIsLoading(false));
+    localStorage.setItem(LAST_INPUT_KEY, userInput);
     setUserInput("");
     setPromptHints([]);
     if (!isMobileScreen) inputRef.current?.focus();
