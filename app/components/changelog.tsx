@@ -32,6 +32,7 @@ export function ChangeLog(props: { onClose?: () => void }) {
       if (commitInfo?.commitMessage.description) {
         const author = commitInfo.Author || "Unknown Author";
         const coAuthored = commitInfo.commitMessage["Co-authored-by"] || [];
+        const uniqueCoAuthored = [...new Set(coAuthored)]; // Filter out duplicates
         const changes = commitInfo.commitMessage.description.filter(
           (change: string) => !change.startsWith("...")
         );
@@ -40,8 +41,8 @@ export function ChangeLog(props: { onClose?: () => void }) {
           .join("\n\n\n");
 
         let coAuthorsSection = "";
-        if (coAuthored.length > 0) {
-          const coAuthorLinks = coAuthored.map(
+        if (uniqueCoAuthored.length > 0) {
+          const coAuthorLinks = uniqueCoAuthored.map(
             (coAuthor: string) =>
               `[${coAuthor.replace("[bot]", "")}](https://github.com/${coAuthor.replace("[bot]", "")})`
           );
