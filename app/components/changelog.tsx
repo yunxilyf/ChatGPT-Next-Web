@@ -30,7 +30,7 @@ export function ChangeLog(props: { onClose?: () => void }) {
       } 🗓️\n`;
 
       if (commitInfo?.commitMessage.description) {
-        const author = commitInfo.Author || "Unknown Author";
+        const author = commitInfo.Author?.replace(/\s/g, "") || "Unknown Author";
         const coAuthored = commitInfo.commitMessage["Co-authored-by"] || [];
         const uniqueCoAuthored = [...new Set(coAuthored)]; // Filter out duplicates
         const changes = commitInfo.commitMessage.description.filter(
@@ -44,14 +44,14 @@ export function ChangeLog(props: { onClose?: () => void }) {
         if (uniqueCoAuthored.length > 0) {
           const coAuthorLinks = uniqueCoAuthored.map(
             (coAuthor: string) =>
-              `[${coAuthor.replace("[bot]", "")}](https://github.com/${coAuthor.replace("[bot]", "")})`
+              `[${coAuthor.replace("[bot]", "").replace(/\s/g, "")}](https://github.com/${coAuthor.replace("[bot]", "").replace(/\s/g, "")})`
           );
           coAuthorsSection = `(Co-Authored by ${coAuthorLinks.join(", ")})`;
         }
 
-        const authorSection = `[${author.replace("[bot]", "")}](https://github.com/${author.replace("[bot]", "")}) ${coAuthorsSection}`;
+        const authorSection = `[${author.replace("[bot]", "").replace(/\s/g, "")}](https://github.com/${author.replace("[bot]", "").replace(/\s/g, "")}) ${coAuthorsSection}`;
 
-        table += `\n\n\n  ![${author.replace("[bot]", "")}](https://github.com/${author.replace("[bot]", "")}.png?size=25) ${authorSection} :\n\n${commitInfo?.commitMessage.summary}\n\n\n${changesFormatted}\n\n\n`;
+        table += `\n\n\n  ![${author.replace("[bot]", "").replace(/\s/g, "")}](https://github.com/${author.replace("[bot]", "").replace(/\s/g, "")}.png?size=25) ${authorSection} :\n\n${commitInfo?.commitMessage.summary}\n\n\n${changesFormatted}\n\n\n`;
       } else {
         table += `###${commitInfo?.commitMessage.summary}###\nNo changes\n\n`;
       }
