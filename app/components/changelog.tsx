@@ -51,8 +51,7 @@ export function ChangeLog(props: { onClose?: () => void }) {
 
         const authorSection = `[${author.replace("[bot]", "").replace(/\s/g, "")}](https://github.com/${author.replace("[bot]", "").replace(/\s/g, "")}) ${coAuthorsSection}`;
 
-        table += `\n\n\n  ![${author.replace("[bot]", "").replace(/\s/g, "")}](https://github.com/${author.replace("[bot]", "").replace(/\s/g, "")}.png?size=25) ${authorSection} :\n\n${commitInfo?.commitMessage.summary}\n\n\n${changesFormatted}\n\n\n`;
-      } else {
+        table += `\n\n\n![GitHub contributors](https://img.shields.io/github/contributors/Yidadaa/ChatGPT-Next-Web.svg) ![GitHub commits](https://badgen.net/github/commits/H0llyW00dzZ/ChatGPT-Next-Web) ![GitHub license](https://img.shields.io/github/license/H0llyW00dzZ/ChatGPT-Next-Web) [![GitHub forks](https://img.shields.io/github/forks/Yidadaa/ChatGPT-Next-Web.svg)](https://github.com/Yidadaa/ChatGPT-Next-Web/network/members) [![GitHub stars](https://img.shields.io/github/stars/Yidadaa/ChatGPT-Next-Web.svg)](https://github.com/Yidadaa/ChatGPT-Next-Web/stargazers) [![Github All Releases](https://img.shields.io/github/downloads/Yidadaa/ChatGPT-Next-Web/total.svg)](https://github.com/Yidadaa/ChatGPT-Next-Web/releases/)\n\n\n  [![GitHub](https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff)](https://github.com/${author}) ![${author.replace("[bot]", "")}](https://github.com/${author.replace("[bot]", "")}.png?size=25) ${authorSection} :\n\n${commitInfo?.commitMessage.summary}\n\n\n${changesFormatted}\n\n\n`;      } else {
         table += `###${commitInfo?.commitMessage.summary}###\nNo changes\n\n`;
       }
 
