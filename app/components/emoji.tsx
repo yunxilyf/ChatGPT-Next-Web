@@ -28,7 +28,7 @@ export function getEmojiUrl(unified: string, style: EmojiStyle) {
 
   const isAppleIosDevice = isMacOS() || isIOS();
   const emojiDataSource =
-    (isAppleIosDevice && style === "apple") ||
+    (isAppleIosDevice && !doesIosSupportLookBehind && style === "apple") ||
     (!isAppleIosDevice && style === "google")
       ? "emoji-datasource-apple"
       : "emoji-datasource-google";
