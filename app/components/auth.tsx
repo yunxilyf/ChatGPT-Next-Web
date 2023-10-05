@@ -14,7 +14,10 @@ export function AuthPage() {
   const access = useAccessStore();
 
   const goHome = () => navigate(Path.Home);
-  const resetAccessCode = () => { access.updateCode(""); access.updateToken(""); }; // Reset access code to empty string
+  const resetAccessCode = () => { // refactor this for better readability of code
+    access.updateCode("");
+    access.updateToken("");
+  }; // Reset access code to empty string
   const goPrivacy = () => navigate(Path.PrivacyPage);
 
   return (
@@ -27,15 +30,27 @@ export function AuthPage() {
       <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
 
       {!getClientConfig()?.isApp && ( // Conditionally render the input access code based on whether it's an app
-        <input
-          className={styles["auth-input"]}
-          type="password"
-          placeholder={Locale.Auth.Input}
-          value={access.accessCode}
-          onChange={(e) => {
-            access.updateCode(e.currentTarget.value);
-          }}
-        />
+        <>
+          <input
+            className={styles["auth-input"]}
+            type="password"
+            placeholder={Locale.Auth.Input}
+            value={access.accessCode}
+            onChange={(e) => {
+              access.updateCode(e.currentTarget.value);
+            }}
+          />
+          <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
+          <input
+            className={styles["auth-input"]}
+            type="password"
+            placeholder={Locale.Settings.Token.Placeholder}
+            value={access.token}
+            onChange={(e) => {
+              access.updateToken(e.currentTarget.value);
+            }}
+          />
+        </>
       )}
 
       {getClientConfig()?.isApp && ( // Conditionally render the input access token based on whether it's an app
