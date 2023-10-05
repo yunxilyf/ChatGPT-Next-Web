@@ -13,6 +13,7 @@ import LoadingIcon from "../icons/three-dots.svg";
 import React from "react";
 import { useDebouncedCallback, useThrottledCallback } from "use-debounce";
 import { showImageModal } from "./ui-lib";
+import { isIOS } from "../utils"; // Import the isIOS functions from the utils file
 
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -100,17 +101,48 @@ export function PreCode(props: { children: any }) {
 }
 
 function _MarkDownContent(props: { content: string }) {
-  const escapedContent = props.content.replace(
-    /(`{3}[\s\S]*?`{3}|`[^`]*`)|(?<!\$)(\$(?!\$))/g,
-    (match, codeBlock) => {
+  const userAgent = window.navigator.userAgent;
+  const isAppleIosDevice = isIOS(); // Load isAppleDevice from isIOS functions
+  // According to this post: https://www.drupal.org/project/next_webform/issues/3358901
+  // iOS 16.4 is the first version to support lookbehind
+  const iosVersionSupportsLookBehind = 16.4;
+  let doesIosSupportLookBehind = false;
+
+  if (isAppleIosDevice) {
+    const match = /OS (\d+([_.]\d+)+)/.exec(userAgent);
+    if (match && match[1]) {
+      const iosVersion = parseFloat(match[1].replace("_", "."));
+      doesIosSupportLookBehind = iosVersion >= iosVersionSupportsLookBehind;
+    }
+  }
+
+  let escapedContent = props.content;
+  if (isAppleIosDevice && !doesIosSupportLookBehind) {
+    escapedContent = props.content.replace(
       // Exclude code blocks & math block from replacement
-      if (codeBlock) {
-        return match; // Return the code block as it is
-      } else {
-        return "&#36;"; // Escape dollar signs outside of code blocks
+      // custom-regex for unsupported Apple devices
+      /(`{3}[\s\S]*?`{3}|`[^`]*`)|(\$(?!\$))/g,
+      (match, codeBlock) => {
+        if (codeBlock) {
+          return match; // Return the code block as it is
+        } else {
+          return "&#36;"; // Escape dollar signs outside of code blocks
+        }
       }
-    },
-  );
+    );
+  } else {
+    escapedContent = props.content.replace(
+      // Exclude code blocks & math block from replacement
+      /(`{3}[\s\S]*?`{3}|`[^`]*`)|(?<!\$)(\$(?!\$))/g,
+      (match, codeBlock) => {
+        if (codeBlock) {
+          return match; // Return the code block as it is
+        } else {
+          return "&#36;"; // Escape dollar signs outside of code blocks
+        }
+      }
+    );
+  }
 
   return (
     <ReactMarkdown
