@@ -19,7 +19,7 @@ export function getEmojiUrl(unified: string, style: EmojiStyle) {
   let doesIosSupportLookBehind = false;
 
   if (isIOS() || isMacOS()) { // Load isAppleDevice from isIOS & isMacOS functions
-    const match = /OS (\d+([_.]\d+)+)/.exec(userAgent);
+    const match = /os (\d+([_.]\d+)+)/.exec(userAgent);
     if (match && match[1]) {
       const iosVersion = parseFloat(match[1].replace("_", "."));
       doesIosSupportLookBehind = iosVersion >= iosVersionSupportsLookBehind;
