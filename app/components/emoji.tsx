@@ -11,14 +11,29 @@ import BlackBotIcon from "../icons/black-bot.svg";
 import { isIOS, isMacOS } from "../utils"; // Import the isIOS & isMacOS functions from the utils file
 
 export function getEmojiUrl(unified: string, style: EmojiStyle) {
-  const isAppleDevice = isIOS() || isMacOS;
+  const userAgent = navigator.userAgent.toLowerCase();
+  // According to this post: https://www.drupal.org/project/next_webform/issues/3358901
+  // iOS 16.4 is the first version to support lookbehind
+  // thanks @a6z6
+  const iosVersionSupportsLookBehind = 16.4;
+  let doesIosSupportLookBehind = false;
+
+  if (isIOS() || isMacOS()) { // Load isAppleDevice from isIOS & isMacOS functions
+    const match = /os (\d+([_.]\d+)+)/.exec(userAgent);
+    if (match && match[1]) {
+      const iosVersion = parseFloat(match[1].replace("_", "."));
+      doesIosSupportLookBehind = iosVersion >= iosVersionSupportsLookBehind;
+    }
+  }
+
+  const isAppleIosDevice = isMacOS() || isIOS();
   const emojiDataSource =
-    (isAppleDevice && style === "apple") ||
-    (!isAppleDevice && style === "google")
+    (isAppleIosDevice && !doesIosSupportLookBehind && style === "apple") ||
+    (!isAppleIosDevice && style === "google")
       ? "emoji-datasource-apple"
       : "emoji-datasource-google";
 
-  const emojiStyle = style === "apple" && isAppleDevice ? "apple" : "google";
+  const emojiStyle = style === "apple" && isAppleIosDevice ? "apple" : "google";
 
   return `https://cdn.staticfile.org/${emojiDataSource}/14.0.0/img/${emojiStyle}/64/${unified}.png`;
 }
