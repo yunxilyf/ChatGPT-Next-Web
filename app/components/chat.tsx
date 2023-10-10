@@ -698,7 +698,7 @@ function _Chat() {
     updatemasks: () => {
       chatStore.updateCurrentSession((session) => {
         const memoryPrompt = session.memoryPrompt;
-        const currentDate = new Date().toISOString(); // Get the current date and time as a string
+        const currentDate = new Date().toLocaleString(); // Get the current date and time as a string
         const existingContext = session.mask.context;
         let currentContext = existingContext[0]; // Get the current context message
     
