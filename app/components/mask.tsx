@@ -586,7 +586,7 @@ export function MaskPage() {
                 text={Locale.Mask.EditModal.Download}
                 key="export"
                 bordered
-                onClick={() => downloadAs(editingMask, `${editingMask.name}`)}
+                onClick={() => downloadAs(editingMask, `${editingMask.name}.json`)}
               />,
               <IconButton
                 key="copy"
