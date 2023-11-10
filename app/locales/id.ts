@@ -7,20 +7,22 @@ const id: PartialLocaleType = {
     Unauthorized: "Akses tidak diizinkan, silakan masukkan kode akses atau masukkan kunci API OpenAI Anda. di halaman [autentikasi](/#/auth) atau di halaman [Pengaturan](/#/settings).",
     Content_Policy: {
       Title:
-        "Permintaan Anda ditandai karena Pelanggaran Kebijakan Konten.\nBaca di sini: https://platform.openai.com/docs/guides/moderation/overview",
+        "Permintaan Anda ditandai karena Pelanggaran Kebijakan Konten.",
+      SubTitle:
+        "Baca selengkapnya di sini: https://platform.openai.com/docs/guides/moderation/overview",
       Reason: {
-        Title: "alasan",
-        sexual: "seksual",
-        hate: "kebencian",
-        harassment: "pelecehan",
-        "self-harm": "melukai diri sendiri",
-        "sexual/minors": "seksual/anak-anak",
-        "hate/threatening": "kebencian/ancaman",
-        "violence/graphic": "kekerasan/grafis",
-        "self-harm/intent": "melukai diri sendiri/niat",
-        "self-harm/instructions": "melukai diri sendiri/instruksi",
-        "harassment/threatening": "pelecehan/ancaman",
-        violence: "kekerasan",
+        Title: "Alasan",
+        sexual: "Seksual",
+        hate: "Kebencian",
+        harassment: "Pelecehan",
+        "self-harm": "Melukai diri sendiri",
+        "sexual/minors": "Seksual/anak-anak",
+        "hate/threatening": "Kebencian/ancaman",
+        "violence/graphic": "Kekerasan/grafis",
+        "self-harm/intent": "Melukai diri sendiri/niat",
+        "self-harm/instructions": "Melukai diri sendiri/instruksi",
+        "harassment/threatening": "Pelecehan/ancaman",
+        violence: "Kekerasan",
       },
     },
   },
@@ -66,6 +68,7 @@ const id: PartialLocaleType = {
       UI: {
         MasksSuccess: "Berhasil memperbarui sesi Masks",
         MasksFail: "Gagal memperbarui sesi Masks",
+        Summarizing: "Meringkas sesi percakapan ini",
         SummarizeSuccess: "Berhasil merangkum sesi obrolan ini",
         SummarizeFail: "Gagal merangkum sesi obrolan ini",
       },
@@ -390,6 +393,26 @@ const id: PartialLocaleType = {
       Title: "Penalti Frekuensi",
       SubTitle:
         "Semakin tinggi nilai, semakin rendah kemungkinan penggunaan ulang baris yang sama",
+    },
+    NumberOfImages: {
+      Title: "Buat Jumlah Gambar",
+      SubTitle:
+        "Sejumlah gambar yang akan dihasilkan\nHarus di antara 1 dan 10. Untuk dall-e-3, hanya 1 yang didukung.",
+    },
+    QualityOfImages: {
+      Title: "Buat Kualitas Gambar",
+      SubTitle:
+        "Kualitas gambar yang akan dihasilkan\nKonfigurasi ini hanya didukung untuk dall-e-3.",
+    },
+    SizeOfImages: {
+      Title: "Ukuran Gambar",
+      SubTitle:
+        "Ukuran gambar yang dihasilkan\nDALL·E-2: Harus menjadi salah satu dari `256x256`, `512x512`, atau `1024x1024`.\nDALL-E-3: Harus menjadi salah satu dari `1024x1024`, `1792x1024`, atau `1024x1792`.",
+    },
+    StyleOfImages: {
+      Title: "Gaya Gambar",
+      SubTitle:
+        "Gaya gambar yang dihasilkan\nHarus menjadi salah satu dari cerah atau alami\nKonfigurasi ini hanya didukung untuk dall-e-3",
     },
   },
   Store: {
