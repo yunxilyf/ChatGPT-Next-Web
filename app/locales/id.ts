@@ -263,6 +263,28 @@ const id: PartialLocaleType = {
           },
         },
       },
+      LocalState: "Data Lokal",
+      Overview: (overview: any) => {
+        return `${overview.chat} percakapan, ${overview.message} pesan, ${overview.prompt} prompt, ${overview.mask} masks`;
+      },
+      Description: {
+        Chat: (overview: any) => {
+          const title = "Percakapan";
+          const description = `${overview.chat} percakapan, ${overview.message} pesan`;
+          return { title, description };
+        },
+        Prompt: (overview: any) => {
+          const title = "Prompts";
+          const description = `${overview.prompt} Prompts`;
+          return { title, description };
+        },
+        Masks: (overview: any) => {
+          const title = "Masks";
+          const description = `${overview.mask} masks`;
+          return { title, description };
+        },
+      },
+      ImportFailed: "Gagal mengimpor dari file",
     },
     SendKey: "Kirim",
     Theme: "Tema",
@@ -456,6 +478,7 @@ const id: PartialLocaleType = {
     Close: "Tutup",
     Create: "Buat",
     Edit: "Edit",
+    Manage: "Kelola",
   },
   Exporter: {
     Model: "Model",

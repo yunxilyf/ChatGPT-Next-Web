@@ -287,6 +287,23 @@ const cn = {
       Overview: (overview: any) => {
         return `${overview.chat} 次对话，${overview.message} 条消息，${overview.prompt} 条提示词，${overview.mask} 个面具`;
       },
+      Description: {
+        Chat: (overview: any) => {
+          const title = "次对话";
+          const description = `${overview.chat} 次对话，, ${overview.message} 条消息`;
+          return { title, description };
+        },
+        Prompt: (overview: any) => {
+          const title = "条提示词";
+          const description = `${overview.prompt} 条提示词`;
+          return { title, description };
+        },
+        Masks: (overview: any) => {
+          const title = "个面具";
+          const description = `${overview.mask} 个面具`;
+          return { title, description };
+        },
+      },
       ImportFailed: "导入失败",
     },
     Mask: {
@@ -530,6 +547,7 @@ const cn = {
     Import: "导入",
     Sync: "同步",
     Config: "配置",
+    Manage: "管理",
   },
   Exporter: {
     Model: "模型",
