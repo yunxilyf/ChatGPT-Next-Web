@@ -75,9 +75,12 @@ const en: LocaleType = {
       load: "Load a session chat",
       copymemoryai: "Copy a session of memory prompt ai",
       updatemasks: "Update a session of memory prompt for a mask",
+      summarize: "Summarize the current session of this chat",
       UI: {
         MasksSuccess: "Successfully updated session of masks",
         MasksFail: "Failed to update session of masks",
+        SummarizeSuccess: "Successfully summarize session of this chat",
+        SummarizeFail: "Failed to summarize session of this chat",
       },      
     },
     InputActions: {
@@ -286,6 +289,14 @@ const en: LocaleType = {
           UserName: "Backup Name",
           Password: "UpStash Redis REST Token",
         },
+
+        GoSync: {
+          Endpoint: "GoSync REST Url",
+          UserName: "Backup Name",
+          Password: "GoSync REST Token",
+          FileName: "File Name",
+        },
+
       },
 
       LocalState: "Local Data",
@@ -523,6 +534,8 @@ const en: LocaleType = {
       HideContext: {
         Title: "Hide Context Prompts",
         SubTitle: "Do not show in-context prompts in chat",
+        UnHide: "Show Context prompts in chat",
+        Hide: "Hide Context prompts in chat",
       },
       Share: {
         Title: "Share This Mask",

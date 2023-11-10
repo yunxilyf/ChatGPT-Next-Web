@@ -61,10 +61,13 @@ const id: PartialLocaleType = {
       save: "Simpan Percakapan Sesi Saat Ini",
       load: "Muat Percakapan Sesi",
       copymemoryai: "Salin sesi memori prompt AI",
-      updatemasks: "Perbarui sesi memori prompt untuk sebuah topeng",
+      updatemasks: "Perbarui sesi memori prompt untuk sebuah Masks",
+      summarize: "Rangkum sesi obrolan saat ini",
       UI: {
-        MasksSuccess: "Berhasil memperbarui sesi topeng",
-        MasksFail: "Gagal memperbarui sesi topeng",
+        MasksSuccess: "Berhasil memperbarui sesi Masks",
+        MasksFail: "Gagal memperbarui sesi Masks",
+        SummarizeSuccess: "Berhasil merangkum sesi obrolan ini",
+        SummarizeFail: "Gagal merangkum sesi obrolan ini",
       },
     },
     InputActions: {
@@ -262,6 +265,14 @@ const id: PartialLocaleType = {
               "Pastikan Anda memiliki izin untuk sinkronisasi. Aktifkan Privat & Publik di sana.",
           },
         },
+
+        GoSync: {
+          Endpoint: "URL GoSync REST",
+          UserName: "Nama Backup",
+          Password: "Token GoSync REST",
+          FileName: "Nama File",
+        },
+
       },
       LocalState: "Data Lokal",
       Overview: (overview: any) => {
@@ -454,6 +465,8 @@ const id: PartialLocaleType = {
       HideContext: {
         Title: "Sembunyikan Prompt Konteks",
         SubTitle: "Tidak menampilkan prompt konteks dalam obrolan",
+        UnHide: "Tampilkan Prompt konteks dalam obrolan",
+        Hide: "Sembunyikan Prompt konteks dalam obrolan",
       },
       Share: {
         Title: "Bagikan Masks Ini",

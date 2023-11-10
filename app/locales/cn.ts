@@ -73,9 +73,12 @@ const cn = {
       load: "加载会话聊天",
       copymemoryai: "复制一个记忆会话的提示AI",
       updatemasks: "更新一个用于掩码的记忆会话提示",
+      summarize: "总结当前会话的聊天内容",
       UI: {
         MasksSuccess: "成功更新了掩码会话",
         MasksFail: "无法更新掩码会话",
+        SummarizeSuccess: "成功总结此次聊天的会话内容",
+        SummarizeFail: "无法总结此次聊天的会话内容",
       },
     },
     InputActions: {
@@ -281,6 +284,14 @@ const cn = {
           UserName: "备份名称",
           Password: "UpStash Redis REST Token",
         },
+
+        GoSync: {
+          Endpoint: "GoSync REST URL",
+          UserName: "备份名称",
+          Password: "GoSync REST 令牌",
+          FileName: "文件名",
+        },
+
       },
 
       LocalState: "本地数据",
@@ -515,6 +526,8 @@ const cn = {
       HideContext: {
         Title: "隐藏预设对话",
         SubTitle: "隐藏后预设对话不会出现在聊天界面",
+        UnHide: "在聊天中显示默认对话框",
+        Hide: "在聊天中隐藏默认对话框",        
       },
       Share: {
         Title: "分享此面具",
