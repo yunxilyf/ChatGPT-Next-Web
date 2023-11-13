@@ -56,6 +56,17 @@ jobs:
         env:
           NODE_VERSION: 18
           working-directory: ChatGPT-Next-Web/go-reverse-proxy
+
+      - 
+        name: Cache Go dependencies
+        if: ${{ github.event.inputs.build_reverse_proxy == 'yes' }}
+        uses: actions/cache@v3
+        with:
+          path: ChatGPT-Next-Web/go-reverse-proxy
+          key: ${{ runner.os }}-go-${{ hashFiles('ChatGPT-Next-Web/go-reverse-proxy/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       -
         name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -87,7 +98,7 @@ jobs:
         if: ${{ github.event.inputs.build_reverse_proxy == 'yes' }}
         uses: docker/build-push-action@v4
         with:
-          context: ./ChatGPT-Next-Web/go-reverse-proxy/DockerFiles
+          context: ./ChatGPT-Next-Web/go-reverse-proxy/DockerFile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/h0llyw00dzz/chatgpt-next-web:${{ github.event.inputs.go_reverse_proxy_tag }}
