@@ -175,6 +175,38 @@ docker run -d -p 3000:3000 \
    yidadaa/chatgpt-next-web
 ```
 
+### Docker（推荐）（仅限 Edge 运行时）
+
+```shell
+docker pull ghcr.io/h0llyw00dzz/chatgpt-next-web
+
+docker run -d -p 3000:3000 \
+   -e OPENAI_API_KEY=sk-xxxx \
+   -e CODE=your-password \
+   ghcr.io/h0llyw00dzz/chatgpt-next-web
+```
+
+您可以在代理后面启动服务：
+
+```shell
+docker run -d -p 3000:3000 \
+   -e OPENAI_API_KEY=sk-xxxx \
+   -e CODE=your-password \
+   -e PROXY_URL=http://localhost:7890 \
+   ghcr.io/h0llyw00dzz/chatgpt-next-web
+```
+
+您可以使用自定义基本路径运行（新）
+
+示例：
+
+```sh
+docker run -e BASE_PATH=/web -p 3000:3000 ghcr.io/h0llyw00dzz/chatgpt-next-web
+```
+运行容器后，您的应用程序应该可以通过 `http://localhost:3000/web` 访问。
+
+注意：自定义基本路径目前仅适用于 Hub `ghcr.io/h0llyw00dzz/chatgpt-next-web`。
+
 如果你的本地代理需要账号密码，可以使用：
 
 ```shell
