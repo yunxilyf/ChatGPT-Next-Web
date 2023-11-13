@@ -55,7 +55,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/chatgpt-next-web:${{ github.event.inputs.tag_version }}
+          tags: ghcr.io/h0llyw00dzz/chatgpt-next-web:${{ github.event.inputs.tag_version }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
