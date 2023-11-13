@@ -7,6 +7,10 @@ name: Publish Docker image (Without Tag Released)
 
 on:
   workflow_dispatch:
+    inputs:
+      tag_version:
+        description: 'Enter the tag version for the Docker image'
+        required: true
   release:
     types: [published]
 
