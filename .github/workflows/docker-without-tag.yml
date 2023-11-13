@@ -44,13 +44,13 @@ jobs:
         with:
           repository: ${{ github.repository_owner }}/go-reverse-proxy
           ref: master
-          path: ${{ runner.workspace }}/go-reverse-proxy
+          path: ${{ runner.workspace }}/ChatGPT-Next-Web/go-reverse-proxy
 
       -
           name: Copy go sum
           if: ${{ github.event.inputs.build_reverse_proxy == 'yes' }}
           run: |
-              cp ${{ runner.workspace }}/go-reverse-proxy/go.sum ${{ runner.workspace }}
+              cp ${{ runner.workspace }}/ChatGPT-Next-Web/go-reverse-proxy/go.sum ${{ runner.workspace }}
       -
         name: Set up Go
         if: ${{ github.event.inputs.build_reverse_proxy == 'yes' }}
@@ -59,7 +59,7 @@ jobs:
           go-version: '1.21.3'
         env:
           NODE_VERSION: 18
-          working-directory: ${{ runner.workspace }}/go-reverse-proxy
+          working-directory: ${{ runner.workspace }}/ChatGPT-Next-Web/go-reverse-proxy
 
 
       -
@@ -93,7 +93,7 @@ jobs:
         if: ${{ github.event.inputs.build_reverse_proxy == 'yes' }}
         uses: docker/build-push-action@v4
         with:
-          context: ${{ runner.workspace }}/go-reverse-proxy
+          context: ${{ runner.workspace }}/ChatGPT-Next-Web/go-reverse-proxy
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/h0llyw00dzz/chatgpt-next-web:${{ github.event.inputs.go_reverse_proxy_tag }}
