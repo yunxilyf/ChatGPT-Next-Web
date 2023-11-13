@@ -21,6 +21,8 @@ on:
       go_reverse_proxy_tag:
         description: 'Enter the tag for the go-reverse-proxy repository (optional)'
         required: false
+  release:
+      types: [published]
 
 jobs:
   push_to_registry:
