@@ -1258,14 +1258,16 @@ function _Chat() {
               }}
             />
             </div>
-          <div className="window-action-button">
-            <IconButton
-              icon={<PinIcon />}
-              bordered
-              title={Locale.Chat.Actions.Pin}
-              onClick={togglePinApp} // Call the enablePinApp function
-            />
-          </div>
+          {!showMaxIcon && (
+            <div className="window-action-button">
+              <IconButton
+                icon={<PinIcon />}
+                bordered
+                title={Locale.Chat.Actions.Pin}
+                onClick={togglePinApp} // Call the enablePinApp function
+              />
+            </div>
+          )}
           {showMaxIcon && (
             <div className="window-action-button">
               <IconButton
