@@ -116,3 +116,7 @@ jobs:
             org.opencontainers.image.description="${{ github.event.inputs.description }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      -
+          name: Clean up cache
+          run: docker builder prune --
