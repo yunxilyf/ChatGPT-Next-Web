@@ -83,7 +83,7 @@ function createEmptySession(): ChatSession {
 // fix known issue where summarize is not using the current model selected
 function getSummarizeModel(currentModel: string, modelConfig: ModelConfig) {
   // should be depends of user selected
-  return currentModel.startsWith("gpt") ? modelConfig.model : currentModel;
+  return currentModel ? modelConfig.model : currentModel;
 }
 
 function countMessages(msgs: ChatMessage[]) {
