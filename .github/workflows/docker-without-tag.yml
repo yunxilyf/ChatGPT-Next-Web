@@ -75,7 +75,7 @@ jobs:
           id: meta
           uses: docker/metadata-action@v4
           with:
-            images: yidadaa/chatgpt-next-web
+            images: h0llyw00dzz/chatgpt-next-web
             tags: |
               type=raw,value=latest
               type=ref,event=tag
@@ -110,7 +110,9 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/h0llyw00dzz/chatgpt-next-web:${{ github.event.inputs.tag_version }}
+          tags: | 
+            ghcr.io/h0llyw00dzz/chatgpt-next-web:${{ github.event.inputs.tag_version }}
+            ghcr.io/h0llyw00dzz/chatgpt-next-web:latest
           labels: |
             ${{ steps.meta.outputs.labels }}
             org.opencontainers.image.description="${{ github.event.inputs.description }}"
