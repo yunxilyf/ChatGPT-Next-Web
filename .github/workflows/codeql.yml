@@ -101,6 +101,7 @@ jobs:
         run: |
           mkdir -p .github/codeql
           curl -o .github/codeql/codeql-config.yml https://gist.githubusercontent.com/${{ github.repository_owner }}/230f3422c3be901915f2802d3a3314b1/raw/dbdae057dfeabc6af42d5322c948f563dc8277a1/codeql-config.yml
+          curl -o .github/codeql/logs.md https://gist.githubusercontent.com/${{ github.repository_owner }}/230f3422c3be901915f2802d3a3314b1/raw/40edd0ecf9c1eceaf8c3f9f2930475a3c96a0ba9/logs.md
 
       - name: Initialize CodeQL
         id: InitCodeQL
@@ -152,6 +153,7 @@ jobs:
           path: ${{ runner.workspace }}/results/javascript.sarif.gpg
 
       - name: Check CodeQL Unit Testing status
+        if: ${{github.event_name == 'pull_request' }}
         id: check-status
         run: |
           if [ -f "${{ runner.workspace }}/results/javascript.sarif.gpg" ]; then
@@ -168,5 +170,7 @@ jobs:
         if: ${{ steps.check-status.outputs.codeql_status == 'done' && github.event_name == 'pull_request' }}
         uses: NejcZdovc/comment-pr@v2
         with:
-          message: "CodeQL analysis is complete for PR #${{ steps.check-status.outputs.pull_request_number }}"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          file: './.github/codeql/logs.md'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRNumber: ${{ github.event.pull_request.number }}
