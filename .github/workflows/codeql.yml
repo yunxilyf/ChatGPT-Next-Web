@@ -170,7 +170,7 @@ jobs:
         if: ${{ steps.check-status.outputs.codeql_status == 'done' && github.event_name == 'pull_request' }}
         uses: NejcZdovc/comment-pr@v2
         with:
-          file: './.github/codeql/logs.md'
+          file: './codeql/logs.md'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRNumber: ${{ github.event.pull_request.number }}
