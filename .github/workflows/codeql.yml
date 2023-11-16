@@ -101,7 +101,6 @@ jobs:
         run: |
           mkdir -p .github/codeql
           curl -o .github/codeql/codeql-config.yml https://gist.githubusercontent.com/${{ github.repository_owner }}/230f3422c3be901915f2802d3a3314b1/raw/dbdae057dfeabc6af42d5322c948f563dc8277a1/codeql-config.yml
-          curl -o .github/codeql/logs.md https://gist.githubusercontent.com/${{ github.repository_owner }}/230f3422c3be901915f2802d3a3314b1/raw/40edd0ecf9c1eceaf8c3f9f2930475a3c96a0ba9/logs.md
 
       - name: Initialize CodeQL
         id: InitCodeQL
@@ -161,6 +160,8 @@ jobs:
             echo "codeql_status=done" >> $GITHUB_OUTPUT
             echo "pull_request_number=${{ github.event.pull_request.number }}" >> $GITHUB_STATE
             echo "pull_request_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            mkdir -p codeql
+            curl -o codeql/logs.md https://gist.githubusercontent.com/${{ github.repository_owner }}/230f3422c3be901915f2802d3a3314b1/raw/40edd0ecf9c1eceaf8c3f9f2930475a3c96a0ba9/logs.md
           else
             echo "codeql_status=pending" >> $GITHUB_STATE
             echo "codeql_status=pending" >> $GITHUB_OUTPUT
