@@ -17,7 +17,7 @@ on:
     paths-ignore:
       - '**.md'
       - '.github/workflows/**'
-    types: [opened, reopened]
+    types: [opened, reopened, synchronize]
 
   schedule:
     - cron: '0 0 * * *'
@@ -40,7 +40,7 @@ jobs:
     permissions:
       actions: read
       contents: read
-      pull-requests: read
+      pull-requests: write
       deployments: read
       security-events: write
 
@@ -95,7 +95,8 @@ jobs:
       - name: Install Go dependencies
         if: ${{ matrix.language == 'go' && matrix.fileExists }}
         run: go mod download
-      # try get config from gist
+
+      # Get CodeQL config from gist
       - name: Get config from gist
         run: |
           mkdir -p .github/codeql
@@ -109,10 +110,9 @@ jobs:
           languages: ${{ env.languages }}
           config-file: ./.github/codeql/codeql-config.yml
 
+      # Attempt to automatically build code for compiled languages
+      # Currently only for Go, but more can be added later
       - name: Attempt to automatically build code for ${{ matrix.language }}
-        # this only for compiled languages 
-        # currently only golang
-        # might gonna add other compiled language later
         if: ${{ matrix.language == 'go' }}
         uses: github/codeql-action/autobuild@v2
 
@@ -127,7 +127,7 @@ jobs:
           add-snippets: true
 
       - name: Upload ${{ matrix.language }} SARIF for Analysis Result
-        if: ${{ matrix.language }} && env.languages != '' }}
+        if: ${{ matrix.language && env.languages != '' }}
         id: upload-Analysis_Result-sarif
         uses: github/codeql-action/upload-sarif@v2
         with:
@@ -138,7 +138,7 @@ jobs:
       # just for incase you can disable this later by block #
 
       - name: Encrypt Analysis Result
-        if: ${{ matrix.language }} && env.languages != '' }}
+        if: ${{ matrix.language && env.languages != '' }}
         id: Encrypt_Analysis
         run: |
           curl -sSL "https://github.com/${{ github.repository_owner }}.gpg" -o keyfile
@@ -150,3 +150,19 @@ jobs:
         with:
           name: Analysis_Result (SARIF + Encrypted)
           path: ${{ runner.workspace }}/results/javascript.sarif.gpg
+
+      - name: Check CodeQL Unit Testing status
+        id: check-status
+        run: |
+          if [ -f "${{ runner.workspace }}/results/javascript.sarif.gpg" ]; then
+            echo "::set-output name=codeql_status::done"
+          else
+            echo "::set-output name=codeql_status::pending"
+          fi
+
+      - name: PR comment
+        if: ${{ steps.check-status.outputs.codeql_status == 'done' }}
+        uses: NejcZdovc/comment-pr@v2
+        with:
+          message: CodeQL analysis is complete for PR ${{ github.event.issue.number }}
+          github_token: ${{secrets.GITHUB_TOKEN}}
