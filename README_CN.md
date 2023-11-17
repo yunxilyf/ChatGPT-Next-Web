@@ -48,6 +48,12 @@
 
 你可以 star/watch 本项目或者 follow 作者来及时获得新功能更新通知。
 
+## 手动禁用工作流程
+
+如果您使用了此分支的分支，请确保禁用此工作流程；否则，您可以启用它，但需要启用 GPG 密钥 [GitHub 文档](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account)
+
+![手动禁用工作流程](./docs/images/workflows/disable_workflow.png)
+
 ## 配置页面访问密码
 
 > 配置密码后，用户需要在设置页手动填写访问码才可以正常聊天，否则会通过消息提示未授权状态。
