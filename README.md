@@ -142,6 +142,13 @@ If you want to update instantly, you can check out the [GitHub documentation](ht
 
 You can star or watch this project or follow the author to get release notifications in time.
 
+## Manually Disabling Workflows
+
+If you subs fork's this fork make sure your disable this workflows, otherwise you can enabled it but required GPG Key enabled [GitHub documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account)
+
+![Manually Disabling Workflows](./docs/images/workflows/disable_workflow.png)
+
+
 ## Access Password
 
 > [简体中文 > 如何增加访问密码](./README_CN.md#配置页面访问密码)
