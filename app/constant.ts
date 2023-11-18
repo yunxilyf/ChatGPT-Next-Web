@@ -115,12 +115,8 @@ export const DEFAULT_MODELS = [
     available: true,
   },
   {
-    /**
-     * Reason : OpenAI Api Models DALL·E 3 disappeared without reason in https://platform.openai.com/account/limits
-     * Will enabled it when it's available again
-     **/
     name: "dall-e-3",
-    available: false,
+    available: true,
   },
   {
     name: "dall-e-2-beta-instruct-vision",
@@ -128,7 +124,7 @@ export const DEFAULT_MODELS = [
   },
   {
     name: "dall-e-3-beta-instruct-vision",
-    available: false,
+    available: true,
   },
   {
     name: "gpt-4",
