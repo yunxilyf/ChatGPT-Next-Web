@@ -128,7 +128,7 @@ export class ChatGPTApi implements LLMApi {
   async chat(options: ChatOptions) {
     const textmoderation = useAppConfig.getState().textmoderation;
     const latest = OpenaiPath.TextModerationModels.latest;
-    const accessStore = useAccessStore.getState();
+    const checkprovider = this.getServiceProvider();
     if (textmoderation
       /**
        * This A Text Moderation OpenAI, default is enabled
@@ -136,7 +136,7 @@ export class ChatGPTApi implements LLMApi {
        **/
       && DEFAULT_MODELS
       && options.whitelist !== true
-      && accessStore.provider !== ServiceProvider.Azure) { // Skip text moderation for Azure provider since azure already have text-moderation, and its enabled by default on their service
+      && checkprovider !== ServiceProvider.Azure) { // Skip text moderation for Azure provider since azure already have text-moderation, and its enabled by default on their service
       const messages = options.messages.map((v) => ({
         role: v.role,
         content: v.content,
@@ -472,10 +472,19 @@ export class ChatGPTApi implements LLMApi {
             const text = msg.data;
             try {
               const json = JSON.parse(text);
-              const delta = json.choices[0].delta.content;
+              const delta = json.choices?.[0]?.delta?.content;
+              const textmoderation = json.prompt_filter_results;
+
               if (delta) {
                 responseText += delta;
                 options.onUpdate?.(responseText, delta);
+              }
+
+              if (textmoderation 
+                  && textmoderation.length > 0 
+                  && provider === ServiceProvider.Azure) {
+                const contentFilterResults = textmoderation[0].content_filter_results;
+                console.log(`[${provider}] [Text Moderation] flagged categories result:`, contentFilterResults);
               }
             } catch (e) {
               console.error("[Request] parse error", text, msg);
