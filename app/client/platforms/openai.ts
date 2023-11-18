@@ -104,16 +104,39 @@ export class ChatGPTApi implements LLMApi {
     }
   }
 
+  
+  /** get service provider stuff
+   * Author :
+   * @H0llyW00dzZ 
+   * this function will be great for static types, so we don't have to put lots of function just for check service provider
+   * Note: This a subject to changes in future, have to made function for this because default its enum not a string, so must made a function for convert it to a string.
+   **/
+
+  private getServiceProvider(): string {
+    const accessStore = useAccessStore.getState();
+    let provider = "";
+  
+    if (accessStore.provider === ServiceProvider.Azure) {
+      provider = ServiceProvider.Azure;
+    } else if (accessStore.provider === ServiceProvider.OpenAI) {
+      provider = ServiceProvider.OpenAI;
+    }
+  
+    return provider;
+  }
+
   async chat(options: ChatOptions) {
     const textmoderation = useAppConfig.getState().textmoderation;
     const latest = OpenaiPath.TextModerationModels.latest;
+    const accessStore = useAccessStore.getState();
     if (textmoderation
       /**
        * This A Text Moderation OpenAI, default is enabled
        * you can disabled it in settings
        **/
       && DEFAULT_MODELS
-      && options.whitelist !== true) {
+      && options.whitelist !== true
+      && accessStore.provider !== ServiceProvider.Azure) { // Skip text moderation for Azure provider since azure already have text-moderation, and its enabled by default on their service
       const messages = options.messages.map((v) => ({
         role: v.role,
         content: v.content,
@@ -227,18 +250,19 @@ export class ChatGPTApi implements LLMApi {
      * Author : @H0llyW00dzZ
      **/
     const magicPayload = this.getNewStuff(defaultModel);
+    const provider = this.getServiceProvider();
 
     if (defaultModel.startsWith("dall-e")) {
-      console.log("[Request] openai payload: ", {
+      console.log(`[Request] [${provider}] payload: `, {
         image: requestPayloads.image,
       });
     } else if (magicPayload.isNewModel) {
-      console.log("[Request] openai payload: ", {
+      console.log(`[Request] [${provider}] payload: `, {
         chat: requestPayloads.chat,
       });
     } else {
       const { max_tokens, ...oldChatPayload } = requestPayloads.chat;
-      console.log("[Request] openai payload: ", {
+      console.log(`[Request] [${provider}] payload: `, {
         chat: oldChatPayload,
       });
     }
@@ -311,11 +335,12 @@ export class ChatGPTApi implements LLMApi {
           async onopen(res) {
             clearTimeout(requestTimeoutId);
             const contentType = res.headers.get("content-type");
-            console.log("[OpenAI] request response content type: ", contentType);
+            console.log(`[ServiceProvider] [${provider}] request response content type: `, contentType);
 
             if (contentType?.startsWith("text/plain")) {
               responseText = await res.clone().text();
-            } else if (contentType?.startsWith("application/json")) {
+            } else if (contentType?.startsWith("application/json") 
+              && defaultModel.startsWith("dall-e")) { // only dall-e
               const jsonResponse = await res.clone().json();
               const imageUrl = jsonResponse.data?.[0]?.url;
               const prompt = requestPayloads.image.prompt;
@@ -597,6 +622,7 @@ export class ChatGPTApi implements LLMApi {
       });
 
       const moderationJson = await moderationResponse.json();
+      const provider = this.getServiceProvider();
 
       if (moderationJson.results && moderationJson.results.length > 0) {
         let moderationResult = moderationJson.results[0]; // Access the first element of the array
@@ -621,20 +647,20 @@ export class ChatGPTApi implements LLMApi {
           }
         }
 
-        console.log("[Text Moderation] flagged:", moderationResult.flagged); // Log the flagged result
+        console.log(`[${provider}] [Text Moderation] flagged:`, moderationResult.flagged); // Log the flagged result
 
         if (moderationResult.flagged) {
           const flaggedCategories = Object.entries(moderationResult.categories)
             .filter(([category, flagged]) => flagged)
             .map(([category]) => category);
 
-          console.log("[Text Moderation] flagged categories:", flaggedCategories); // Log the flagged categories
+          console.log(`[${provider}] [Text Moderation] flagged categories:`, flaggedCategories); // Log the flagged categories
         }
 
         return moderationResult as ModerationResponse;
       } else {
-        console.error("Moderation response is empty");
-        throw new Error("Failed to get moderation response");
+        console.error(`[${provider}] [Text Moderation] Moderation response is empty`);
+        throw new Error(`[${provider}] [Text Moderation] Failed to get moderation response`);
       }
     } catch (e) {
       console.error("[Request] failed to make a moderation request", e);
