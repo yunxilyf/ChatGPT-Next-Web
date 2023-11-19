@@ -328,9 +328,11 @@ export class ChatGPTApi implements LLMApi {
           }
 
           if (remainText.length > 0) {
-            responseText += remainText[0];
-            remainText = remainText.slice(1);
-            options.onUpdate?.(responseText, remainText[0]);
+            const fetchCount = Math.max(1, Math.round(remainText.length / 60));
+            const fetchText = remainText.slice(0, fetchCount);
+            responseText += fetchText;
+            remainText = remainText.slice(fetchCount);
+            options.onUpdate?.(responseText, fetchText);
           }
 
           requestAnimationFrame(animateResponseText);
@@ -493,7 +495,8 @@ export class ChatGPTApi implements LLMApi {
             const text = msg.data;
             try {
               const json = JSON.parse(text);
-              const delta = json.choices?.[0]?.delta?.content;
+              const choices = json.choices as Array<{ delta: { content: string } }>;
+              const delta = choices[0]?.delta?.content;
               const textmoderation = json?.prompt_filter_results;
 
               if (delta) {
