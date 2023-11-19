@@ -183,7 +183,6 @@ export function SideBar(props: { className?: string }) {
           }}
           shadow
         />
-        />
         <IconButton
           icon={<PrivacyIcon />}
           text={shouldNarrow ? undefined : Locale.PrivacyPage.Name}
