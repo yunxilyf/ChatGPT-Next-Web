@@ -371,13 +371,6 @@ export function PreviewActions(props: {
           icon={<DownloadIcon />}
           onClick={props.download}
         ></IconButton>
-        <IconButton
-          text={Locale.Export.Share}
-          bordered
-          shadow
-          icon={loading ? <LoadingIcon /> : <ShareIcon />}
-          onClick={share}
-        ></IconButton>
       </div>
       <div
         style={{
@@ -538,7 +531,7 @@ export function ImagePreviewer(props: {
           </div>
 
           <div>
-            <div className={styles["main-title"]}>ChatGPT Next Web</div>
+            <div className={styles["main-title"]}>ChatGPT Web</div>
             <div className={styles["sub-title"]}>
               Build your own AI assistant.
             </div>
@@ -549,9 +542,6 @@ export function ImagePreviewer(props: {
             </div>
           </div>
           <div>
-            <div className={styles["chat-info-item"]}>
-            {"🔗"} {REPO_URL}
-            </div>
             <div className={styles["chat-info-item"]}>
             {"🤖"} {Locale.Exporter.Model}: {mask.modelConfig.model}
             </div>
