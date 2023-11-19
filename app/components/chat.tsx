@@ -746,6 +746,7 @@ function usePinApp() {
   useEffect(() => {
     if (session.id !== undefined) {
       setPinApp(false);
+      appWindow.setAlwaysOnTop(false);
     }
   }, [session.id]);
 
