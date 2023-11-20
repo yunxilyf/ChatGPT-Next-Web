@@ -98,7 +98,7 @@ export function PreCode(props: { children: any }) {
     </>
   );
 }
-
+// used to be for math / latex
 function escapeDollarNumber(text: string) {
   let escapedText = "";
 
@@ -106,8 +106,31 @@ function escapeDollarNumber(text: string) {
     let char = text[i];
     const nextChar = text[i + 1] || " ";
 
-    if (char === "$" && nextChar >= "0" && nextChar <= "9") {
+    if (char === "$" && nextChar >= "\\" + "0" + "\\" && nextChar <= "\\" + "9" + "\\") {
       char = "\\$";
+    }
+
+    escapedText += char;
+  }
+
+  return escapedText;
+}
+// used to be $ any
+function escapeDollarMathNumber(text: string) {
+  let escapedText = "";
+  let isInMathExpression = false;
+
+  for (let i = 0; i < text.length; i += 1) {
+    let char = text[i];
+    const nextChar = text[i + 1] || " ";
+
+    if (char === "$") {
+      isInMathExpression = !isInMathExpression;
+    }
+
+    if (char === "$" && nextChar >= "0" && nextChar <= "9" && !isInMathExpression) {
+      char = "&#36;" + nextChar; // "&#36;" <--- this magic
+      i += 1; // Skip the next character since we have already included it
     }
 
     escapedText += char;
@@ -117,10 +140,14 @@ function escapeDollarNumber(text: string) {
 }
 
 function _MarkDownContent(props: { content: string }) {
-  const escapedContent = useMemo(
-    () => escapeDollarNumber(props.content),
-    [props.content],
-  );
+  const escapedContent = useMemo(() => {
+    let processedContent = props.content;
+    if (processedContent.includes("$")) {
+      processedContent = escapeDollarMathNumber(processedContent);
+    }
+    processedContent = escapeDollarNumber(processedContent);
+    return processedContent;
+  }, [props.content]);
 
   return (
     <ReactMarkdown
