@@ -26,7 +26,7 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login docker.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Pull Docker image
-        run: docker pull yidadaa/chatgpt-next-web:latest
+        run: docker pull ghcr.io/h0llyw00dzz/chatgpt-next-web:latest
 
       - name: Set up Kubernetes environment
         uses: azure/k8s-set-context@v3
