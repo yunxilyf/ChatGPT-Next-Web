@@ -108,7 +108,7 @@ function escapeDollarNumber(text: string) {
 
     if (char === " $ " && nextChar >= "0" && nextChar <= "9") {
       char = " $ ";
-    } else if (char === " $ " && nextChar !== " " && !/\s/.test(nextChar)) {
+    } else if (char === "$" && nextChar !== " " && !/\s/.test(nextChar)) {
       char = " $ ";
     }
 
