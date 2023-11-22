@@ -98,16 +98,22 @@ export function PreCode(props: { children: any }) {
     </>
   );
 }
-// used to be for math / latex
+// used to be for math / latex (fix done)
 function escapeDollarNumber(text: string) {
   let escapedText = "";
+  let isInMathExpression = false;
 
   for (let i = 0; i < text.length; i += 1) {
     let char = text[i];
     const nextChar = text[i + 1] || " ";
 
-    if (char === "$" && nextChar >= "\\" + "0" + "\\" && nextChar <= "\\" + "9" + "\\") {
-      char = "\\$";
+    if (char === "$") {
+      isInMathExpression = !isInMathExpression;
+    }
+
+    if (char === "$" && nextChar >= "0" && nextChar <= "9" && !isInMathExpression) {
+      char = "&#36;" + nextChar;
+      i += 1; // Skip the next character since we have already included it
     }
 
     escapedText += char;
@@ -115,7 +121,7 @@ function escapeDollarNumber(text: string) {
 
   return escapedText;
 }
-// used to be $ any
+// used to be $ any (will refactor this later)
 function escapeDollarMathNumber(text: string) {
   let escapedText = "";
   let isInMathExpression = false;
@@ -129,7 +135,7 @@ function escapeDollarMathNumber(text: string) {
     }
 
     if (char === "$" && nextChar >= "0" && nextChar <= "9" && !isInMathExpression) {
-      char = "&#36;" + nextChar; // "&#36;" <--- this magic
+      char = "&#36;" + nextChar;
       i += 1; // Skip the next character since we have already included it
     }
 
