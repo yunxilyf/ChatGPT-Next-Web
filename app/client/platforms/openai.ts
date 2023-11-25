@@ -74,10 +74,16 @@ export class ChatGPTApi implements LLMApi {
     return res.choices?.at(0)?.message?.content ?? "";
   }
 
-  /** System Fingerprint & Max Tokens
-   * Author : @H0llyW00dzZ
-   * This method should be a member of the ChatGPTApi class, not nested inside another method
-   **/
+  /**
+   * Retrieves information about the new stuff.
+   *
+   * @param model - The model to retrieve information for.
+   * @param max_tokens - The maximum number of tokens.
+   * @param system_fingerprint - The system fingerprint.
+   * @returns An object containing information about the new stuff.
+   *
+   * @author H0llyW00dzZ
+   */
   private getNewStuff(
     model: string,
     max_tokens?: number,
@@ -119,13 +125,11 @@ export class ChatGPTApi implements LLMApi {
     };
   }
 
-  /** get service provider stuff
-   * Author :
-   * @H0llyW00dzZ 
-   * this function will be great for static types, so we don't have to put lots of function just for check service provider
-   * Note: This a subject to changes in future, have to made function for this because default its enum not a string, so must made a function for convert it to a string.
-   **/
-
+  /**
+   * Retrieves the service provider based on the access store.
+   * @returns The service provider as a string.
+   * @author H0llyW00dzZ
+   */
   private getServiceProvider(): string {
     const accessStore = useAccessStore.getState();
     let provider = "";
@@ -139,15 +143,27 @@ export class ChatGPTApi implements LLMApi {
     return provider;
   }
 
+  /**
+   * Initiates a chat with the specified options.
+   * 
+   * @param options - The chat (LLM's method by Yidadaa) options.
+   * @returns A Promise that resolves to the chat and images response.
+   * 
+   * @remarks
+   * This method sends chat and images messages to the OpenAI API & Azure and handles text moderation if enabled.
+   * 
+   */
   async chat(options: ChatOptions) {
+    /**
+     * The text moderation configuration.
+     * @remarks
+     * This variable stores the text moderation settings obtained from the app configuration.
+     * @author H0llyW00dzZ
+     */
     const textmoderation = useAppConfig.getState().textmoderation;
     const latest = OpenaiPath.TextModerationModels.latest;
     const checkprovider = this.getServiceProvider();
     if (textmoderation
-      /**
-       * This A Text Moderation OpenAI, default is enabled
-       * you can disabled it in settings
-       **/
       && DEFAULT_MODELS
       && options.whitelist !== true
       && checkprovider !== ServiceProvider.Azure) { // Skip text moderation for Azure provider since azure already have text-moderation, and its enabled by default on their service
@@ -225,11 +241,12 @@ export class ChatGPTApi implements LLMApi {
     const userMessages = messages.filter((msg) => msg.role === "user");
     const userMessage = userMessages[userMessages.length - 1]?.content;
     /**
-     * DALL·E Models
-     * Author: @H0llyW00dzZ
-     * Usage in this chat: prompt
-     * Example: A Best Picture of Andromeda Galaxy
-     **/
+     * Represents the actual model used for DALL·E Models.
+     * @author H0llyW00dzZ
+     * @remarks This is the actual model used for DALL·E Models.
+     * @usage in this chat: prompt
+     * @example : A Best Picture of Andromeda Galaxy
+     */
     const actualModel = this.getModelForInstructVersion(modelConfig.model);
     const { max_tokens, system_fingerprint } = this.getNewStuff(
       modelConfig.model,
@@ -237,6 +254,14 @@ export class ChatGPTApi implements LLMApi {
       modelConfig.system_fingerprint
     );
 
+    /**
+     * Payloads for making requests to the OpenAI API.
+     * 
+     * @remarks
+     * This object contains two properties: `chat` and `image`. The `chat` payload is used for sending chat messages to the API, while the `image` payload is used for generating images based on a prompt.
+     * 
+     * @author H0llyW00dzZ
+     */
     const requestPayloads = {
       chat: {
         messages,
@@ -262,9 +287,14 @@ export class ChatGPTApi implements LLMApi {
       },
     };
 
-    /** Magic TypeScript payload parameter 🎩 🪄
-     * Author : @H0llyW00dzZ
-     **/
+    /**
+     * Represents the magic payload typescript parameter 🎩 🪄.
+     * 
+     * @remarks
+     * This constant includes the provider and is used to store the result of the `getNewStuff` method.
+     * 
+     * @author H0llyW00dzZ
+     */
     const magicPayload = this.getNewStuff(defaultModel);
     const provider = this.getServiceProvider();
 
@@ -290,6 +320,10 @@ export class ChatGPTApi implements LLMApi {
     options.onController?.(controller);
 
     try {
+      /**
+       * Represents the dallemodels variable.
+       * @author H0llyW00dzZ
+       */
       const dallemodels = magicPayload.isDalle;
 
       let chatPath = dallemodels
@@ -655,10 +689,13 @@ export class ChatGPTApi implements LLMApi {
   }
 
   /**
-   * Models Text-Moderations OpenAI
-   * Author: @H0llyW00dzZ
-   **/
-
+   * Sends a moderation request to the specified moderation path with the given payload.
+   * @param moderationPath The path for the moderation request.
+   * @param moderationPayload The payload for the moderation request.
+   * @returns A promise that resolves to a ModerationResponse object.
+   * @throws An error if the moderation response is empty or if the moderation request fails.
+   * @author H0llyW00dzZ
+   */
   private async sendModerationRequest(
     moderationPath: string,
     moderationPayload: any
@@ -717,9 +754,11 @@ export class ChatGPTApi implements LLMApi {
     }
   }
   /**
-   * DALL·E Instruct
-   * Author : @H0llyW00dzZ
-   * Still WIP
+   * Returns the model name for the given input model, accounting for instruct versions (For Instruct Version Still WIP).
+   * If the input model is not found in the model map, it returns the input model as is.
+   * @param inputModel - The input model name.
+   * @returns The corresponding model name or the input model if not found.
+   * @author H0llyW00dzZ
    */
 
   private getModelForInstructVersion(inputModel: string): string {
@@ -730,11 +769,15 @@ export class ChatGPTApi implements LLMApi {
     return modelMap[inputModel] || inputModel;
   }
   /**
-   * DALL·E Models
-   * Author : @H0llyW00dzZ
-   * Todo : Function to save an image from a response json object and make it accessible locally
+   * Saves the image from the response to the local filesystem.
+   * @param imageResponse - The response containing the image data.
+   * @param filename - The name of the file to be saved.
+   * @returns A Promise that resolves when the image is saved successfully.
+   * @throws If there is an error while saving the image.
+   * @todo Implement the actual saving logic.
+   * @note This method is currently not used. and subject to changed if there is a better way to save or store the image. (e.g. using own blob storage or aws s3,etc)
+   * @author H0llyW00dzZ
    */
-
   private async saveImageFromResponse(imageResponse: any, filename: string): Promise<void> {
     try {
       const blob = await imageResponse.blob();
