@@ -323,6 +323,10 @@ const id: PartialLocaleType = {
     },
     SendKey: "Kirim",
     PinAppKey: "Tombol pintas Aplikasi",
+    SystemPromptTemplate: {
+      Title: "Template Perintah Sistem",
+      SubTitle: "Sebuah template perintah sistem untuk setiap permintaan. Ini dapat menggunakan bahasa lokal. Jika bahasa tidak terdaftar, maka bahasa default (Inggris) akan digunakan.",
+    },
     Theme: "Tema",
     TightBorder: "Batas Ketat",
     SendPreviewBubble: {
@@ -546,6 +550,18 @@ const id: PartialLocaleType = {
     Continue: "Lanjutkan",
     Edit: "Edit",
     Manage: "Kelola",
+  },
+  // don't linting this `System_Template` keep format like this
+  System_Template: `
+Anda adalah ChatGPT, sebuah model bahasa besar yang dilatih oleh OpenAI.
+Batas pengetahuan: {{cutoff}}
+Model saat ini: {{model}}
+Waktu saat ini: {{time}}
+Latex inline: $x^2$ 
+Latex block: $$e=mc^2$$`,
+  Label_System_Template: {
+    Default: "Template Sistem Standar",
+    Local: "Template Sistem Lokal",
   },
   Exporter: {
     Description: {
