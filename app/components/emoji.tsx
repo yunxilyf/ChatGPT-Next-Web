@@ -14,13 +14,13 @@ export function getEmojiUrl(unified: string, style: EmojiStyle) {
   const isAppleDevice = isMacOS() || isIOS();
   const emojiDataSource =
     (isAppleDevice && style === "apple") ||
-    (!isAppleDevice && style === "google")
+      (!isAppleDevice && style === "google")
       ? "emoji-datasource-apple"
       : "emoji-datasource-google";
 
   const emojiStyle = style === "apple" && isAppleDevice ? "apple" : "google";
 
-  return `https://cdn.staticfile.org/${emojiDataSource}/14.0.0/img/${emojiStyle}/64/${unified}.png`;
+  return `https://cdn.staticfile.org/${emojiDataSource}/15.0.1/img/${emojiStyle}/64/${unified}.png`;
 }
 
 export function debounce(func: Function, delay: number) {
