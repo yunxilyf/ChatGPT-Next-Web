@@ -974,6 +974,13 @@ export function Settings() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  // force it to set false for textmoderation if the provider is Azure or Google since default is true
+  useEffect(() => {
+    // This will set textmoderation to false if the provider is Azure or Google
+    if (accessStore.provider === ServiceProvider.Azure || accessStore.provider === ServiceProvider.Google) {
+      updateConfig(prevConfig => ({ ...prevConfig, textmoderation: false }));
+    }
+  }, [accessStore.provider]);
 
   const clientConfig = useMemo(() => getClientConfig(), []);
   const showAccessCode = enabledAccessControl && !clientConfig?.isApp;
@@ -1538,7 +1545,8 @@ export function Settings() {
               config.update((config) => (config.modelConfig = modelConfig));
             }}
           />
-          {accessStore.provider !== ServiceProvider.Azure && (
+          {accessStore.provider !== ServiceProvider.Azure && 
+           accessStore.provider !== ServiceProvider.Google && ( // disable text-moderation for azure and google provider
             <ListItem
               title={Locale.Settings.TextModeration.Title}
               subTitle={Locale.Settings.TextModeration.SubTitle}
