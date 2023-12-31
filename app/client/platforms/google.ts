@@ -60,6 +60,24 @@ interface ModelConfig {
   top_p?: number;
   // top_k?: number; // Uncomment and add to the interface if used.
   model?: string;
+  safetySettings?: [
+    {
+      category: string,
+      threshold: string,
+    },
+    {
+      category: string,
+      threshold: string,
+    },
+    {
+      category: string,
+      threshold: string,
+    },
+    {
+      category: string,
+      threshold: string,
+    },
+  ],
 }
 
 /**
@@ -135,6 +153,24 @@ export class GeminiProApi implements LLMApi {
         topP: modelConfig.top_p,
         // "topK": modelConfig.top_k,
       },
+      safetySettings: [
+        {
+          category: "HARM_CATEGORY_HARASSMENT",
+          threshold: "BLOCK_ONLY_HIGH",
+        },
+        {
+          category: "HARM_CATEGORY_HATE_SPEECH",
+          threshold: "BLOCK_ONLY_HIGH",
+        },
+        {
+          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          threshold: "BLOCK_ONLY_HIGH",
+        },
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+          threshold: "BLOCK_ONLY_HIGH",
+        },
+      ],
     };
     console.log(`[Request] [${provider}] payload: `, requestPayload);
 
@@ -164,9 +200,11 @@ export class GeminiProApi implements LLMApi {
           "streamGenerateContent",
         );
         let finished = false;
+
+        let existingTexts: string[] = [];
         const finish = () => {
           finished = true;
-          options.onFinish(responseText + remainText);
+          options.onFinish(existingTexts.join(""));
         };
 
         // Animate response to make it look smooth
@@ -213,10 +251,25 @@ export class GeminiProApi implements LLMApi {
               try {
                 let data = JSON.parse(ensureProperEnding(partialData));
                 console.log("[Streaming] fetching json decoder: ", data);
-                let fetchText = apiClient.extractMessage(data[data.length - 1]);
-                //console.log("[Response Animation] fetchText: ", fetchText);
-                remainText += fetchText;
+                const textArray = data.reduce(
+                  (acc: string[], item: { candidates: any[] }) => {
+                    const texts = item.candidates.map((candidate) =>
+                      candidate.content.parts
+                        .map((part: { text: any }) => part.text)
+                        .join(""),
+                    );
+                    return acc.concat(texts);
+                  },
+                  [],
+                );
+
+                if (textArray.length > existingTexts.length) {
+                  const deltaArray = textArray.slice(existingTexts.length);
+                  existingTexts = textArray;
+                  remainText += deltaArray.join("");
+                }
               } catch (error) {
+                // console.log("[Response Animation] error: ", error,partialData);
                 // skip error message when parsing json
               }
 
