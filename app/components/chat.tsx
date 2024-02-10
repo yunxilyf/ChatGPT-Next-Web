@@ -446,12 +446,16 @@ function useScrollToBottom() {
   // for auto-scroll
   const scrollRef = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(true);
-
+  const config = useAppConfig();
+  let isAutoScrollEnabled: boolean = config.autoScrollMessage;
   function scrollDomToBottom() {
     const dom = scrollRef.current;
     if (dom) {
-      // Improve Use smooth scrolling behavior
-      dom.scrollTo({ top: dom.scrollHeight, behavior: 'smooth' });
+      requestAnimationFrame(() => { // this stupid frame might conflict with smooth behavior
+        setAutoScroll(isAutoScrollEnabled);
+        // Improve Use smooth scrolling behavior
+        dom.scrollTo({ top: dom.scrollHeight, behavior: 'smooth' });
+      });
     }
   }
 
@@ -1187,7 +1191,8 @@ function _Chat() {
     }
 
     setHitBottom(isHitBottom);
-    setAutoScroll(isHitBottom);
+    let isAutoScrollEnabled: boolean = config.autoScrollMessage;
+    setAutoScroll(isAutoScrollEnabled);
   }, [setHitBottom, setAutoScroll, isMobileScreen, msgRenderIndex, setMsgRenderIndex]); // Added setMsgRenderIndex
 
   // Use the custom hook to debounce the onChatBodyScroll function
