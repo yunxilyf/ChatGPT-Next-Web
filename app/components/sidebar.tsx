@@ -187,15 +187,7 @@ export function SideBar(props: { className?: string }) {
           shadow
         />
       </div>
-      <div className={styles["sidebar-header-bar"]}>
-        <IconButton
-          icon={<PinnedIcon />}
-          text={shouldNarrow ? undefined : Locale.Changelog.Name}
-          className={styles["sidebar-bar-button"]}
-          onClick={() => navigate(Path.ChangeLog, { state: { fromHome: true } })}
-          shadow
-        />
-      </div>
+      
 
       <div className={styles["chat-list-search"]}>
         <SearchInput
