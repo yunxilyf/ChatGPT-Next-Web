@@ -612,9 +612,6 @@ export function ImagePreviewer(props: {
           </div>
           <div>
             <div className={styles["chat-info-item"]}>
-            {"🔗"} {REPO_URL}
-            </div>
-            <div className={styles["chat-info-item"]}>
             {"🤖"} {Locale.Exporter.Model}: {mask.modelConfig.model}
             </div>
             <div className={styles["chat-info-item"]}>
